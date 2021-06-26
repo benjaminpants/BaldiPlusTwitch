@@ -268,6 +268,7 @@ namespace BBPlusTwitch
                     type = typeof(GravityEvent);
                     break;
             }
+            GeneralBaldiStuff.RandomEvents = GameObject.FindObjectsOfType<RandomEvent>();
             UnityEngine.Debug.Log("Trying to find Type:" + type.Name);
             RandomEvent randevent = GameObject.Instantiate(GeneralBaldiStuff.RandomEvents.ToList().Find(x => x.GetType() == type));
             UnityEngine.Debug.Log("Heres the list of all the shits we have:");

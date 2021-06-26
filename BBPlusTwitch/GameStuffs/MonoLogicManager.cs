@@ -29,20 +29,6 @@ namespace BBPlusTwitch
         public static MonoLogicManager Instance;
 
 
-        private static IEnumerator AsyncPrepare() //thanks fasguy(fasman)
-        {
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("MainLevel_2", LoadSceneMode.Additive);
-            AsyncOperation asyncLoad2 = SceneManager.LoadSceneAsync("MainLevel_3", LoadSceneMode.Additive);
-
-            while (!asyncLoad.isDone || !asyncLoad2.isDone)
-            {
-                yield return null;
-            }
-
-            GeneralBaldiStuff.RandomEvents = Resources.FindObjectsOfTypeAll<RandomEvent>().DistinctBy(x => x.GetType()).ToArray();
-
-        }
-
 
         private void Awake()
         {
@@ -61,7 +47,6 @@ namespace BBPlusTwitch
             }
             DontDestroyOnLoad(this);
             SceneManager.sceneLoaded += OnSceneChange;
-            StartCoroutine(AsyncPrepare());
         }
 
         private void OnSceneChange(Scene scene, LoadSceneMode mode)
