@@ -118,6 +118,7 @@ public class TwitchConnectionHandler : MonoBehaviour
                         TwitchCommand com;
                         if (TwitchManager.Commands.TryGetValue(cmd, out com))
                         {
+                            UnityEngine.Debug.Log("Found a valid command!");
                             if (com.MinVotes == -1 || SettingsManager.Mode == TwitchMode.Chaos)
                             {
                                 if ((CommandCooldown > TwitchManager.CommandCooldown) || !TwitchManager.CooldownEnabled)

@@ -27,17 +27,5 @@ namespace StolenYetHelpfulCode
             }
         }
 
-        public static object GrabPrivateVariable<T>(this T obj, string varname) //partially copied from here with some modifications: https://www.c-sharpcorner.com/blogs/setting-and-getting-private-variable-of-a-class-without-properties
-        {
-            FieldInfo type = obj.GetType().GetField(varname, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            return type.GetValue(obj);
-        }
-
-        public static void SetPrivateVariable<T>(this T obj, string varname, object set) //partially copied from here with some modifications: https://www.c-sharpcorner.com/blogs/setting-and-getting-private-variable-of-a-class-without-properties
-        {
-            FieldInfo type = obj.GetType().GetField(varname, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            type.SetValue(obj,set);
-        }
-
     }
 }

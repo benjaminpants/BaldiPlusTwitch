@@ -38,7 +38,7 @@ namespace BBPlusTwitch
             TwitchManager.AddCommand("sellall", SellAll, 50);
             TwitchManager.AddCommand("sendallnpcs", OhGodOhFuck, 55);
             TwitchManager.AddCommand("mute", MuteGame, 50);
-            //sTwitchManager.AddCommand("doevent", ActivateEvent, 50);
+            TwitchManager.AddCommand("doevent", ActivateEvent, 50);
 
             //the following commands can only be executed in johnny's shop
 
@@ -76,7 +76,14 @@ namespace BBPlusTwitch
 
         public static bool Farm_SetAnimal(string person, string animal)
         {
-            UnityEngine.Debug.Log("fuck");
+            if ((!Enum.TryParse(animal, true, out FarmAnimalType ani)) || !Singleton<CoreGameManager>.Instance)
+            {
+                ani = FarmAnimalType.Chicken;
+            }
+            if (ani == FarmAnimalType.Gorilla)
+            {
+                ani = FarmAnimalType.Cow;
+            }
             if (!Singleton<BaseGameManager>.Instance)
             {
                 return false;
@@ -90,8 +97,10 @@ namespace BBPlusTwitch
             if (Singleton<BaseGameManager>.Instance.currentTrip.GetType() == typeof(FarmTripManager))
             {
                 FarmTripManager farm = (FarmTripManager)Singleton<BaseGameManager>.Instance.currentTrip;
-                farm.SetPrivateVariable("currentAnimal",FarmAnimalType.Chicken);
-                ((Image)farm.GrabPrivateVariable("currentIcon")).sprite = farm.GetAnimalSprite(FarmAnimalType.Chicken);
+                FieldInfo currentanimal = AccessTools.Field(typeof(FarmTripManager), "currentAnimal");
+                FieldInfo currenticon = AccessTools.Field(typeof(FarmTripManager), "currentIcon");
+                currentanimal.SetValue(farm,ani);
+                ((Image)currenticon.GetValue(farm)).sprite = farm.GetAnimalSprite(ani);
                 return true;
             }
             return false;
@@ -103,7 +112,7 @@ namespace BBPlusTwitch
             {
                 return false;
             }
-            EnvironmentController ec = Singleton<BaseGameManager>.Instance.CurrentEc;
+            EnvironmentController ec = Singleton<BaseGameManager>.Instance.Ec;
             foreach (NPC npc in ec.Npcs)
             {
                 npc.TargetPosition(Singleton<CoreGameManager>.Instance.GetPlayer(0).transform.position);
@@ -179,7 +188,7 @@ namespace BBPlusTwitch
 
 
 
-            Singleton<BaseGameManager>.Instance.CurrentEc.MakeNoise(Singleton<CoreGameManager>.Instance.GetPlayer(0).transform.position, 126);
+            Singleton<BaseGameManager>.Instance.Ec.MakeNoise(Singleton<CoreGameManager>.Instance.GetPlayer(0).transform.position, 126);
 
             return true;
         }
@@ -268,17 +277,14 @@ namespace BBPlusTwitch
                     type = typeof(GravityEvent);
                     break;
             }
-            GeneralBaldiStuff.RandomEvents = GameObject.FindObjectsOfType<RandomEvent>();
-            UnityEngine.Debug.Log("Trying to find Type:" + type.Name);
+            GeneralBaldiStuff.RandomEvents = Resources.FindObjectsOfTypeAll<RandomEvent>();
             RandomEvent randevent = GameObject.Instantiate(GeneralBaldiStuff.RandomEvents.ToList().Find(x => x.GetType() == type));
-            UnityEngine.Debug.Log("Heres the list of all the shits we have:");
-            foreach (RandomEvent rnd in GeneralBaldiStuff.RandomEvents)
-            {
-                UnityEngine.Debug.Log(rnd.name + "\nType:" + rnd.GetType().Name);
-            }
-            System.Random rng = Singleton<BaseGameManager>.Instance.lg.controlledRNG;
-            randevent.Initialize(Singleton<BaseGameManager>.Instance.CurrentEc, rng);
-            randevent.SetEventTime(rng);
+            FieldInfo eventdesckey = AccessTools.Field(typeof(RandomEvent), "eventDescKey");
+            //randevent.SetPrivateVariable("eventDescKey", Singleton<LocalizationManager>.Instance.GetLocalizedText((string)randevent.GrabPrivateVariable("eventDescKey")) + "\nSponsored By: " + person);
+            eventdesckey.SetValue(randevent, Singleton<LocalizationManager>.Instance.GetLocalizedText((string)eventdesckey.GetValue(randevent)) + "\nSponsored By: " + person);
+            System.Random rng = GameObject.FindObjectOfType<LevelBuilder>().controlledRNG;
+            randevent.Initialize(Singleton<BaseGameManager>.Instance.Ec, rng);
+            randevent.SetEventTime(rng); 
             randevent.AfterUpdateSetup();
             randevent.Begin();
             return true;
