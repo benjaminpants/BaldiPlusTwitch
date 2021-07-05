@@ -16,6 +16,10 @@ Once the source is downloaded:
 
 Create a folder called "Dependecies" where the solution is and copy all of the content from the BALDI_DATA/Managed folder to it, then copy all of the bepinex/core dll files from your bepinex 5.4 installation in there as well.
 
+also in there put this shit you need it: https://github.com/benjaminpants/BBPlusNameAPI
+
+(unlike this mod theres actually a release that you can just download)
+
 Bam you should be able to just compile it now, if not create an issue or something.
 
 
@@ -31,8 +35,11 @@ Put in your username in and the channel's chat you want to connect to.
 
 Use the OATH generator in the config file to generate an auth code and put it in the right place.
 
-Once that is done boot up the game again, select Chaos, Chaos(5s) or Chaos(15s) as Vanilla and Speedy don't work right now.
+You can also turn on and off commands here.
 
+Once that is done boot up the game again, select Chaos, Chaos(5s) or Chaos(15s).
+
+Offline mode is incomplete and should not be used for now.
 
 # doo doo feces
 

@@ -29,11 +29,12 @@ namespace BBPlusTwitch
         {
             if (textVal == 0)
             {
+                if (!SettingsManager.ShowVotes) return true;
                 StringBuilder builder = new StringBuilder();
                 builder.AppendLine();
                 foreach (KeyValuePair<string,List<string[]>> kvp in TwitchManager.CommandVotes)
                 {
-                    if (TwitchManager.Commands[kvp.Key].MinVotes != -1 && SettingsManager.Mode != TwitchMode.Chaos)
+                    if (TwitchManager.Commands[kvp.Key].MinVotes != -1 && (SettingsManager.Mode != TwitchMode.Chaos && SettingsManager.Mode != TwitchMode.Offline) && TwitchManager.Commands[kvp.Key].Enabled)
                     {
                         builder.AppendLine(kvp.Key + "(" + (kvp.Value.Count) + ")");
                     }

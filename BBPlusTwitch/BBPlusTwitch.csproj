@@ -11,6 +11,9 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>..\Dependecies\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="BBPlusNameAPI">
+      <HintPath>..\Dependecies\BBPlusNameAPI.dll</HintPath>
+    </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\Dependecies\BepInEx.dll</HintPath>
     </Reference>
